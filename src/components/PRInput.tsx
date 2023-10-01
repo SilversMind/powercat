@@ -33,7 +33,6 @@ export const PRInput = ({ updatePRTable }: PRInputProps) => {
                 <input
                     value={PRValue}
                     type="number"
-                    name="pr"
                     onChange={(e) => {
                         setPRValue(e.target.valueAsNumber)
                     }}/>

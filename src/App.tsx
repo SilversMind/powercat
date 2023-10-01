@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {CalculatorScreen} from "./components/CalculatorScreen";
+import {CalculatorScreen} from "./sources/CalculatorScreen";
 
 function App() {
     const [page, setPage] = useState("CalculatorPage")
