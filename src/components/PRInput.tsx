@@ -23,7 +23,7 @@ export const PRInput = ({ updatePRTable }: PRInputProps) => {
         fetch('http://127.0.0.1:8000/calculator', requestOptions)
         .then(response => response.json())
         .then(data => {
-            updatePRTable(data.rpeTables); console.log(data)
+            updatePRTable(data.rpeTables);
         }).catch(error => console.error('Erreur :', error));}
 
     return (
