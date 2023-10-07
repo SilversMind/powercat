@@ -6,11 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {CalculatorScreen} from "./sources/CalculatorScreen";
 import {HomeScreen} from "./sources/HomeScreen";
+import {ProfileScreen} from "./components/ProfileScreen/ProfileScreen";
 
 const router = createBrowserRouter([
     {
         path: "/calculator",
         element: <CalculatorScreen/>,
+    },
+    {
+        path: "/profile",
+        element: <ProfileScreen/>
     },
     {
         path: "/",

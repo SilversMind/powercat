@@ -1,15 +1,21 @@
 import {Exercise} from "./Exercise";
 export interface TrainingProps {
-    date: string;
+    id: number;
     exercises: {
             type: string;
-            sets: number;
+            set: number;
             reps: number;
             rpe: number;
         }[];
 }
 
-export const Training = ({date, exercises}: TrainingProps ) => {
+const onClick = () => {
+    fetch("http://localhost:8000/finish_training").then(() => {
+        window.location.reload();
+    });
+}
+
+export const Training = ({id, exercises}: TrainingProps ) => {
     const containerStyle = {
         backgroundColor: 'rgba(87,86,86,0.17)',
         border: '1px solid #ccc',
@@ -17,18 +23,19 @@ export const Training = ({date, exercises}: TrainingProps ) => {
     };
     return (
         <>
-            <h2>Entrainement du {date}</h2>
+            <h2>Entrainement n°{id}</h2>
             <div style={containerStyle}>
                 {exercises?.map((exercise) => (
                     <Exercise
                         exerciseName={exercise.type}
-                        set={exercise.sets}
+                        set={exercise.set}
                         rpe={exercise.rpe}
                         reps={exercise.reps}
                     />
                 ))
                 }
             </div>
+            <button onClick={() => onClick()} >Fini !</button>
         </>
     );
 }

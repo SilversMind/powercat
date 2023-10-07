@@ -21,6 +21,6 @@ export const HomeScreen = () => {
 
     if (!TrainingData) return <p>Loading</p>
     return (
-        <Training date={TrainingData.date} exercises={TrainingData.exercises}/>
+        <Training id={TrainingData.id} exercises={TrainingData.exercises}/>
     );
 }
