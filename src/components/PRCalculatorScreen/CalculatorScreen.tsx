@@ -1,5 +1,5 @@
-import {PRInput, RPEDetails} from "../components/PRInput";
-import {PRTableComponent} from "../components/PRTableComponent";
+import {PRInput, RPEDetails} from "./PRInput";
+import {PRTableComponent} from "./PRTableComponent";
 import React, {useState} from "react";
 
 export const CalculatorScreen = () => {

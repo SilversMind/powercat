@@ -18,12 +18,12 @@ export const PRTableComponent = ({ PRTable }: PRTableProps) => {
                 <tbody>
                     <tr>
                         <td>RPE\Répétitions</td>
-                        {PRTable[0]?.weights.map((_, index) => <td>{index+1}</td>)}
+                        {PRTable[0]?.weights.map((_: any, index: number) => <td>{index+1}</td>)}
                     </tr>
                     {PRTable?.map((rpedetail) => (
                         <tr>
                             <td>{rpedetail.rpe}</td>
-                            {rpedetail.weights.map((pr) => <td>{pr}</td>)}
+                            {rpedetail.weights.map((pr: number) => <td>{pr}</td>)}
                         </tr>
                     ))}
 

@@ -20,7 +20,7 @@ export const PRInput = ({ updatePRTable }: PRInputProps) => {
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        fetch('http://127.0.0.1:8000/calculator', requestOptions)
+        fetch('http://127.0.0.1:8000/calculator/', requestOptions)
         .then(response => response.json())
         .then(data => {
             updatePRTable(data.rpeTables);

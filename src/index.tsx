@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {CalculatorScreen} from "./sources/CalculatorScreen";
-import {HomeScreen} from "./sources/HomeScreen";
+import {CalculatorScreen} from "./components/PRCalculatorScreen/CalculatorScreen";
+import {HomeScreen} from "./components/HomeScreen/HomeScreen";
 import {ProfileScreen} from "./components/ProfileScreen/ProfileScreen";
-
+import {ChakraProvider} from "@chakra-ui/react";
 const router = createBrowserRouter([
     {
         path: "/calculator",
@@ -28,7 +28,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
   </React.StrictMode>
 );
 

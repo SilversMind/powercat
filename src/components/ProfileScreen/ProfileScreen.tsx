@@ -16,7 +16,7 @@ export const ProfileScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/profile');
+                const response = await fetch('http://127.0.0.1:8000/profile/');
                 const data = await response.json();
                 setProfileData(data);
             } catch (error) {
