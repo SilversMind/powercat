@@ -1,20 +1,15 @@
-import React, {useState} from 'react';
-import './App.css';
-import {CalculatorScreen} from "./components/PRCalculatorScreen/CalculatorScreen";
-
+import React from "react";
+import "./App.css";
+import {Router} from "./router";
+import {ChakraProvider} from "@chakra-ui/react";
 function App() {
-    const [page, setPage] = useState("CalculatorPage")
-    const switchPage = () => {
-        setPage("HomePagePage");
-    }
 
 
-    return (
-        <>
-        {page === "CalculatorPage" ? <CalculatorScreen/> : <p>Welcome !</p>}
-            <button onClick={switchPage}>Go to seance planner</button>
-        </>
-    )
+  return (
+      <ChakraProvider>
+        <Router />
+      </ChakraProvider>
+  );
 }
 
 export default App;
