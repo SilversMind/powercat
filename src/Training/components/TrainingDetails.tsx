@@ -1,26 +1,24 @@
 import {
+    Accordion,
+    AccordionButton,
+    AccordionItem,
+    AccordionPanel,
+    Box,
+    Checkbox,
     Flex,
     Spacer,
-    Box,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
 } from "@chakra-ui/react";
 import Colors from "../../settings/colors";
-import {Checkbox} from "@chakra-ui/react";
 import {ExerciseCard} from "./ExerciseCard";
-import {
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-    TableContainer,
-} from "@chakra-ui/react";
 
-import {TrainingProps} from "../TrainingScreen";
+import {Training} from "../types";
 
 export type ExerciseDetailProps = {
     exerciseName: string
@@ -80,7 +78,7 @@ const ExerciseDetail = ({set, rpe, reps, weight}: Omit<ExerciseDetailProps, "exe
     );
 };
 
-export const TrainingDetails = (trainingData: TrainingProps) => {
+export const TrainingDetails = (trainingData: Training) => {
 
     return (
 

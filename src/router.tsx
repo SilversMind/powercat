@@ -1,16 +1,16 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {ProfileScreen} from "./ProfileScreen/ProfileScreen";
-import {TrainingScreen} from "./TrainingScreen/TrainingScreen";
+import {ProfilePage} from "./Profile/ProfilePage";
 import React from "react";
+import TrainingPage from "./Training/TrainingPage";
 
 const router = createBrowserRouter([
     {
         path: "/profile",
-        element: <ProfileScreen/>,
+        element: <ProfilePage/>,
     },
     {
         path: "/",
-        element: <TrainingScreen/>,
+        element: <TrainingPage/>,
     },
 ]);
 

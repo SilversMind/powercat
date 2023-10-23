@@ -1,6 +1,6 @@
-import {Profile} from "../TrainingScreen/TrainingScreen";
+import {User} from "../Training/types";
 
-export const fetchProfileData = async (profileName: string): Promise<Profile> => {
+export const fetchProfileData = async (profileName: string): Promise<User> => {
     const response = await fetch("http://192.168.1.16:8000/profile/" + profileName);
     const profileData = await response.json()
     return {
@@ -15,12 +15,11 @@ export const fetchProfileData = async (profileName: string): Promise<Profile> =>
 export const updateCurrentTraining = async (profileName: string) => {
     const requestOptions = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: profileName }),
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name: profileName}),
     };
     const response = await fetch("http://192.168.1.16:8000/training/finish", requestOptions);
     await response.json()
-
 
 
 }
