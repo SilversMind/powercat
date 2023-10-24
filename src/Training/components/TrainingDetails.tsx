@@ -4,13 +4,11 @@ import {
     AccordionItem,
     AccordionPanel,
     Box,
-    Checkbox,
     Flex,
     Spacer,
     Table,
     TableContainer,
     Tbody,
-    Td,
     Th,
     Thead,
     Tr,
@@ -19,6 +17,7 @@ import Colors from "../../settings/colors";
 import {ExerciseCard} from "./ExerciseCard";
 
 import {Training} from "../types";
+import {TrainingDetailsRow} from "./TrainingDetailsRow";
 
 export type ExerciseDetailProps = {
     exerciseName: string
@@ -61,17 +60,9 @@ const ExerciseDetail = ({set, rpe, reps, weight}: Omit<ExerciseDetailProps, "exe
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {Array.from({length: set}, () => 0).map((_: any, index: number) => (
-                        <Tr key={index}>
-                            <Td>n° {index + 1}</Td>
-                            <Td>{reps}</Td>
-                            <Td>{weight} kg</Td>
-                            <Td>{rpe}</Td>
-                            <Td>
-                                <Checkbox size={"lg"} colorScheme="green"/>
-                            </Td>
-                        </Tr>
-                    ))}
+                    {Array.from({length: set}, () => 0).map((_: any, index: number) =>
+                        <TrainingDetailsRow reps={reps} weight={weight} rpe={rpe} index={index} key={index}/>
+                    )}
                 </Tbody>
             </Table>
         </TableContainer>
@@ -85,8 +76,8 @@ export const TrainingDetails = (trainingData: Training) => {
         <Accordion allowToggle>
             <Flex direction={"column"}>
                 <Flex direction={"column"}>
-                    {trainingData?.exercises.map((exercise: ExerciseDetailProps) =>
-                        <AccordionItem borderColor={"transparent"}>
+                    {trainingData?.exercises.map((exercise: ExerciseDetailProps, index: number) =>
+                        <AccordionItem borderColor={"transparent"} key={index}>
                             <Box key={exercise.exerciseName}>
                                 <AccordionButton>
                                     <ExerciseCard

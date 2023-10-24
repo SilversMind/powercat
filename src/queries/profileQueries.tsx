@@ -1,17 +1,3 @@
-import {User} from "../Training/types";
-
-export const fetchProfileData = async (profileName: string): Promise<User> => {
-    const response = await fetch("http://192.168.1.16:8000/profile/" + profileName);
-    const profileData = await response.json()
-    return {
-        name: profileData.name,
-        PR: profileData.PR,
-        currentProgram: profileData.current_program,
-        currentTraining: profileData.current_training,
-        isTrainingInProgress: profileData.is_training_inprogress,
-    }
-};
-
 export const updateCurrentTraining = async (profileName: string) => {
     const requestOptions = {
         method: "POST",

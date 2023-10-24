@@ -2,41 +2,24 @@ import {Button, Flex, Spinner} from "@chakra-ui/react"
 import {ProgramProgressInfo} from "./components/ProgramProgressInfo"
 import Colors from "../settings/colors"
 import {TrainingDetails} from "./components/TrainingDetails"
-import React, {useEffect, useState} from "react"
-import {fetchProgramData} from "../queries/programQueries"
-import {fetchProfileData, updateCurrentTraining} from "../queries/profileQueries"
-import {Program, User} from "./types"
+import React from "react"
+import {updateCurrentTraining} from "../queries/profileQueries"
 import {useTraining} from "./services/queryTraining";
+import {useUser} from "../useUser";
 
 export const TrainingContent = () => {
-    const [user, setUser] = useState<User>()
-    const [program, setProgram] = useState<Program>()
-    const {training, isLoading} = useTraining(user?.currentTraining)
+    const {currentUser} = useUser()
+    const {training, isLoading} = useTraining(currentUser)
 
-    useEffect(() => {
-        fetchProfileData("Lolo")
-            .then(profileData => {
-                setUser(profileData)
-                return profileData
-            })
-
-        fetchProgramData(Math.floor(1)).then(data => setProgram({
-            programId: data.id,
-            nbTrainings: data.nb_trainings
-        })).catch(error => {
-            console.error('Error:', error);
-        })
-    }, [])
-
-    if (!training || !program || !user || isLoading) return (
+    if (!training || isLoading) return (
         <Flex margin="auto">
             <Spinner/>
         </Flex>
     )
-    
+
     return (
         <>
-            <ProgramProgressInfo program={program} trainingId={training.trainingId}/>
+            <ProgramProgressInfo programId={training.id} nbTrainings={training.nbTrainings} trainingId={training.id}/>
             <Flex
                 fontWeight="bold"
                 mt={4}
@@ -46,7 +29,7 @@ export const TrainingContent = () => {
                 rounded="md"
                 color="white"
             >
-                Séance {training.trainingId}
+                Séance {training.id}
             </Flex>
             <TrainingDetails {...training} />
             <Button
@@ -56,7 +39,7 @@ export const TrainingContent = () => {
                 borderColor="white"
                 color="white"
                 size="lg"
-                onClick={() => updateCurrentTraining(user.name)}
+                onClick={() => updateCurrentTraining("Lolo")}
             >
                 Valider la séance
             </Button>

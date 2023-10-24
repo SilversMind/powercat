@@ -1,15 +1,13 @@
 import {Box, Flex, Grid, Progress} from "@chakra-ui/react";
 import Colors from "../../settings/colors";
-import {Program} from "../types";
 
 interface ProgramProgressInfoProps {
-    program: Program
+    programId: number
+    nbTrainings: number
     trainingId: number
 }
 
-export const ProgramProgressInfo = ({program, trainingId}: ProgramProgressInfoProps) => {
-    const {nbTrainings, programId} = program
-
+export const ProgramProgressInfo = ({programId, nbTrainings, trainingId}: ProgramProgressInfoProps) => {
     return (
         <Grid mt={1} w={"90vw"} h={"15vh"} bg={Colors.Primary} rounded={"md"}>
             <Flex fontWeight="bold" mt={4} color="white" justify="center" align="center">
