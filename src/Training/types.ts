@@ -1,7 +1,8 @@
 export type Training = {
-    trainingId: number
+    id: number
     programId: number
     exercises: Exercise[]
+    nbTrainings: number
 }
 
 type Exercise = {
@@ -10,11 +11,6 @@ type Exercise = {
     reps: number
     rpe: number
     weight: number
-}
-
-export type Program = {
-    programId: number
-    nbTrainings: number
 }
 
 export type PR = {

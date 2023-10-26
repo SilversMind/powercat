@@ -1,5 +1,5 @@
-import Colors from "../../settings/colors";
-import {Flex, Text, Spacer} from "@chakra-ui/react";
+import Colors from "../../colors";
+import {Flex, Spacer, Text} from "@chakra-ui/react";
 import {ExerciseDetailProps} from "./TrainingDetails";
 
 interface ExerciseCardColumnInfosProps {

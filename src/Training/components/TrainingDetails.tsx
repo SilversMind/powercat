@@ -13,11 +13,11 @@ import {
     Thead,
     Tr,
 } from "@chakra-ui/react";
-import Colors from "../../settings/colors";
+import Colors from "../../colors";
 import {ExerciseCard} from "./ExerciseCard";
-
 import {Training} from "../types";
 import {TrainingDetailsRow} from "./TrainingDetailsRow";
+import {useUser} from "../../useUser";
 
 export type ExerciseDetailProps = {
     exerciseName: string
@@ -31,7 +31,8 @@ export function formatName(exerciseName: string) {
     return exerciseName[0].toLocaleUpperCase() + exerciseName.slice(1)
 }
 
-const ExerciseDetail = ({set, rpe, reps, weight}: Omit<ExerciseDetailProps, "exerciseName">) => {
+const ExerciseDetail = ({set, rpe, reps, weight, exerciseName}: ExerciseDetailProps) => {
+    const {currentUser} = useUser()
     return (
         <TableContainer
             ml={"10vw"}
@@ -60,8 +61,10 @@ const ExerciseDetail = ({set, rpe, reps, weight}: Omit<ExerciseDetailProps, "exe
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {Array.from({length: set}, () => 0).map((_: any, index: number) =>
-                        <TrainingDetailsRow reps={reps} weight={weight} rpe={rpe} index={index} key={index}/>
+                    {Array.from({length: set}).map((_: any, index: number) =>
+                        <TrainingDetailsRow reps={reps} weight={weight} rpe={rpe} index={index}
+                                            exerciseName={exerciseName}
+                                            key={currentUser + index.toString()}/>
                     )}
                 </Tbody>
             </Table>
@@ -90,6 +93,7 @@ export const TrainingDetails = (trainingData: Training) => {
                                 </AccordionButton>
                                 <AccordionPanel p={0}>
                                     <ExerciseDetail
+                                        exerciseName={exercise.exerciseName}
                                         set={exercise.set}
                                         rpe={exercise.rpe}
                                         reps={exercise.reps}

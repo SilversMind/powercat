@@ -1,13 +1,14 @@
 import {create} from "zustand"
-
-export const NAMES = ["Lolo", "Zouzou"]
+import {fetchActiveUsers} from "./Profile/services/profileServices"
 
 export type UserState = {
-    currentUser: string
+    currentUser: string | undefined
     updateCurrentUser: (newCurrentUser: string) => void
 }
 
 export const useUser = create<UserState>((set) => ({
-    currentUser: NAMES[0],
+    currentUser: undefined,
     updateCurrentUser: (newCurrentUser: string) => set({currentUser: newCurrentUser})
 }))
+
+fetchActiveUsers().then(users => useUser.setState({currentUser: users[0]}))

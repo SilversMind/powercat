@@ -1,5 +1,5 @@
 import {Box, Flex, Grid, Progress} from "@chakra-ui/react";
-import Colors from "../../settings/colors";
+import Colors from "../../colors";
 
 interface ProgramProgressInfoProps {
     programId: number

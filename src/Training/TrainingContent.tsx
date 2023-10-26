@@ -1,17 +1,17 @@
 import {Button, Flex, Spinner} from "@chakra-ui/react"
 import {ProgramProgressInfo} from "./components/ProgramProgressInfo"
-import Colors from "../settings/colors"
+import Colors from "../colors"
 import {TrainingDetails} from "./components/TrainingDetails"
 import React from "react"
-import {updateCurrentTraining} from "../queries/profileQueries"
 import {useTraining} from "./services/queryTraining";
-import {useUser} from "../useUser";
+import {updateCurrentTraining} from "./services/trainingService";
 
 export const TrainingContent = () => {
-    const {currentUser} = useUser()
-    const {training, isLoading} = useTraining(currentUser)
+    const {training, isLoading} = useTraining()
 
-    if (!training || isLoading) return (
+    if (!training) return null
+
+    if (isLoading) return (
         <Flex margin="auto">
             <Spinner/>
         </Flex>
@@ -19,7 +19,8 @@ export const TrainingContent = () => {
 
     return (
         <>
-            <ProgramProgressInfo programId={training.id} nbTrainings={training.nbTrainings} trainingId={training.id}/>
+            <ProgramProgressInfo programId={training.programId} nbTrainings={training.nbTrainings}
+                                 trainingId={training.id}/>
             <Flex
                 fontWeight="bold"
                 mt={4}
@@ -39,7 +40,7 @@ export const TrainingContent = () => {
                 borderColor="white"
                 color="white"
                 size="lg"
-                onClick={() => updateCurrentTraining("Lolo")}
+                onClick={updateCurrentTraining}
             >
                 Valider la séance
             </Button>
