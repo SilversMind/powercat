@@ -3,22 +3,17 @@ import Colors from "../../colors";
 import {CheckIcon, CloseIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
 import {useUser} from "../../useUser";
+import {Set} from "../types";
+import {validateSet} from "../services/trainingService";
 
-type TrainingDetailsRowProps = {
-    exerciseName: string,
-    reps: number,
-    weight: number,
-    rpe: number,
-    index: number
-}
-type ExerciseDictionary = {
+export type ExerciseDictionary = {
     [key: string]: ValidatedSet
 }
 type ValidatedSet = {
     [key: number]: boolean
 };
 
-enum Validation {
+export enum Validation {
     PASS,
     FAIL,
     WAITING
@@ -30,53 +25,32 @@ const ValidationColor: { [key in Validation]: string } = {
     [Validation.WAITING]: Colors.LightPrimary
 }
 
-export const TrainingDetailsRow = ({rpe, reps, weight, index, exerciseName}: TrainingDetailsRowProps) => {
-    const [validationStatus, setValidationStatus] = useState(Validation.WAITING)
+export const TrainingDetailsRow = ({
+                                       rpe,
+                                       reps,
+                                       weight,
+                                       id,
+                                       exerciseName,
+                                       validationStatus: previousValidationStatus
+                                   }: Set) => {
+    const [validationStatus, setValidationStatus] = useState(previousValidationStatus)
     const {currentUser} = useUser()
 
     const handleClick = (status: Validation, exerciseName: string) => {
         setValidationStatus(status)
-        const storeDataString = localStorage.getItem(currentUser!);
         const isValidated: boolean = status === Validation.PASS
-        let storeData: ExerciseDictionary = {}
-        if (!storeDataString) {
-            const exercise: ValidatedSet = {}
-            exercise[index] = isValidated
-            storeData[exerciseName] = exercise
-        } else {
-            storeData = JSON.parse(storeDataString)
-            if (storeData[exerciseName]) {
-                storeData[exerciseName][index] = isValidated
-            } else {
-                const exercise: ValidatedSet = {}
-                exercise[index] = isValidated
-                storeData[exerciseName] = exercise
-                storeData[exerciseName][index] = isValidated
-            }
-        }
-        localStorage.setItem(currentUser!, JSON.stringify(storeData))
-    }
-
-    const getPreviousStatus = (exerciseName: string) => {
-        const storeDataString = localStorage.getItem(currentUser!)
-        if (storeDataString) {
-            const storeData = JSON.parse(storeDataString)
-            if (storeData[exerciseName] && storeData[exerciseName].hasOwnProperty(index)) {
-                return storeData[exerciseName][index] ? Validation.PASS : Validation.FAIL
-            }
-        }
-        return Validation.WAITING
+        validateSet({rpe, reps, weight, id: id, exerciseName}, isValidated)
     }
 
     useEffect(() => {
-        setValidationStatus(getPreviousStatus(exerciseName))
-    }, [currentUser, exerciseName])
+        setValidationStatus(previousValidationStatus)
+    }, [currentUser, exerciseName, previousValidationStatus])
 
     if (!currentUser) return <h1>Nada</h1>
 
     return (
         <Tr bgColor={ValidationColor[validationStatus]}>
-            <Td>n° {index + 1}</Td>
+            <Td>n° {id + 1}</Td>
             <Td>{reps}</Td>
             <Td>{weight} kg</Td>
             <Td>{rpe}</Td>

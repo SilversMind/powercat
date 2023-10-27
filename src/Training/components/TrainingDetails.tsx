@@ -6,6 +6,7 @@ import {
     Box,
     Flex,
     Spacer,
+    Spinner,
     Table,
     TableContainer,
     Tbody,
@@ -16,8 +17,9 @@ import {
 import Colors from "../../colors";
 import {ExerciseCard} from "./ExerciseCard";
 import {Training} from "../types";
-import {TrainingDetailsRow} from "./TrainingDetailsRow";
+import {ExerciseDictionary, TrainingDetailsRow, Validation} from "./TrainingDetailsRow";
 import {useUser} from "../../useUser";
+import {useCurrentTrainingResult} from "../services/queryTraining";
 
 export type ExerciseDetailProps = {
     exerciseName: string
@@ -31,8 +33,19 @@ export function formatName(exerciseName: string) {
     return exerciseName[0].toLocaleUpperCase() + exerciseName.slice(1)
 }
 
+function getSetValidationStatus(trainingResults: ExerciseDictionary | undefined, exerciseName: string, id: number): Validation {
+    if (!trainingResults) return Validation.WAITING
+    if (trainingResults[exerciseName] && trainingResults[exerciseName].hasOwnProperty(id)) {
+        return trainingResults[exerciseName][id] ? Validation.PASS : Validation.FAIL
+    }
+    return Validation.WAITING
+}
+
 const ExerciseDetail = ({set, rpe, reps, weight, exerciseName}: ExerciseDetailProps) => {
     const {currentUser} = useUser()
+    const {isLoading, trainingResults} = useCurrentTrainingResult()
+    console.log(trainingResults)
+    if (isLoading) return (<Spinner>Spin</Spinner>)
     return (
         <TableContainer
             ml={"10vw"}
@@ -62,8 +75,9 @@ const ExerciseDetail = ({set, rpe, reps, weight, exerciseName}: ExerciseDetailPr
                 </Thead>
                 <Tbody>
                     {Array.from({length: set}).map((_: any, index: number) =>
-                        <TrainingDetailsRow reps={reps} weight={weight} rpe={rpe} index={index}
+                        <TrainingDetailsRow reps={reps} weight={weight} rpe={rpe} id={index}
                                             exerciseName={exerciseName}
+                                            validationStatus={getSetValidationStatus(trainingResults, exerciseName, index)}
                                             key={currentUser + index.toString()}/>
                     )}
                 </Tbody>
