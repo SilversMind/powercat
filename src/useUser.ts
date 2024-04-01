@@ -1,5 +1,6 @@
 import {create} from "zustand"
 import {fetchActiveUsers} from "./Profile/services/profileServices"
+import {settings} from "./setting";
 
 export type UserState = {
     currentUser: string | undefined
@@ -10,4 +11,4 @@ export const useUser = create<UserState>((set) => ({
     currentUser: undefined,
     updateCurrentUser: (newCurrentUser: string) => set({currentUser: newCurrentUser})
 }))
-fetchActiveUsers().then(users => useUser.setState({currentUser: users[0]}))
+fetchActiveUsers(settings.defaultIPAddress).then(users => useUser.setState({currentUser: users[0]}))

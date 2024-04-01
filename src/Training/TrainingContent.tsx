@@ -1,26 +1,46 @@
-import {Button, Flex, Spinner} from "@chakra-ui/react"
+import {Button, Flex, Spinner, useToast} from "@chakra-ui/react"
 import {ProgramProgressInfo} from "./components/ProgramProgressInfo"
 import Colors from "../colors"
 import {TrainingDetails} from "./components/TrainingDetails"
 import React from "react"
-import {useTraining} from "./services/queryTraining";
-import {updateCurrentTraining} from "./services/trainingService";
+import {useTraining, useUpdateTraining} from "./services/queryTraining";
+import {useUser} from "../useUser";
+import {useProgram} from "../Program/services/queryProgram";
+
 
 export const TrainingContent = () => {
-    const {training, isLoading} = useTraining()
+    const toast = useToast()
+    const {currentUser} = useUser()
+    const {training, isTrainingLoading} = useTraining()
+    const {updateTraining} = useUpdateTraining()
+    const {program, isProgramLoading} = useProgram()
 
-    if (!training) return null
+    if (!program || !training) return null
 
-    if (isLoading) return (
+    if (isProgramLoading || isTrainingLoading) return (
         <Flex margin="auto">
             <Spinner/>
         </Flex>
     )
 
+    const handleClick = () => {
+        updateTraining(currentUser, {
+            onSuccess: () => {
+                toast({
+                    title: 'Séance terminé',
+                    description: "Bien joué l'équipe ! Stronger than yesterday, Weaker than tomorrow",
+                    status: 'success',
+                    isClosable: true,
+                })
+            }
+        })
+    }
+
+
     return (
         <>
-            <ProgramProgressInfo programId={training.programId} nbTrainings={training.nbTrainings}
-                                 trainingId={training.id}/>
+            <ProgramProgressInfo trainingId={training.trainingPosition} programId={program.id}
+                                 nbTraining={program.nbTrainings}/>
             <Flex
                 fontWeight="bold"
                 mt={4}
@@ -30,7 +50,7 @@ export const TrainingContent = () => {
                 rounded="md"
                 color="white"
             >
-                Séance {training.id}
+                Séance {training.trainingPosition}
             </Flex>
             <TrainingDetails {...training} />
             <Button
@@ -40,7 +60,7 @@ export const TrainingContent = () => {
                 borderColor="white"
                 color="white"
                 size="lg"
-                onClick={updateCurrentTraining}
+                onClick={handleClick}
             >
                 Valider la séance
             </Button>

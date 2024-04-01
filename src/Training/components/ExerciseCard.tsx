@@ -1,6 +1,7 @@
 import Colors from "../../colors";
 import {Flex, Spacer, Text} from "@chakra-ui/react";
-import {ExerciseDetailProps} from "./TrainingDetails";
+import {Exercise} from "../types";
+import {formatName} from "./TrainingDetails";
 
 interface ExerciseCardColumnInfosProps {
     name: string;
@@ -22,12 +23,7 @@ const ExerciseCardColumnInfos = ({
     );
 };
 
-export const ExerciseCard = ({
-                                 exerciseName,
-                                 set,
-                                 reps, rpe,
-                                 weight
-                             }: ExerciseDetailProps) => {
+export const ExerciseCard = (exercise: Exercise) => {
     return (
         <Flex
             bg={Colors.Primary}
@@ -38,21 +34,21 @@ export const ExerciseCard = ({
             align="center"
         >
             <Flex m={4} color={"white"} fontWeight={"bold"}>
-                {exerciseName}
+                {formatName(exercise.name)}
             </Flex>
-            <ExerciseCardColumnInfos name={"Série"} value={set}/>
-            <ExerciseCardColumnInfos name={"Répétition"} value={reps}/>
+            <ExerciseCardColumnInfos name={"Série"} value={exercise.sets.length}/>
+            <ExerciseCardColumnInfos name={"Répétition"} value={exercise.sets[0].reps}/>
             <Flex flexDir={"column"} color={"white"} align="center">
                 <Text>Poids</Text>
                 <Flex>
-                    <Text fontSize={"lg"}>{weight}</Text>
+                    <Text fontSize={"lg"}>{exercise.sets[0].weight}</Text>
                     <Text m={1} fontSize={"xs"}>
                         kg
                     </Text>
                 </Flex>
             </Flex>
             <Spacer/>
-            <ExerciseCardColumnInfos name={"RPE"} value={rpe}/>
+            <ExerciseCardColumnInfos name={"RPE"} value={exercise.sets[0].rpe}/>
         </Flex>
     );
 };

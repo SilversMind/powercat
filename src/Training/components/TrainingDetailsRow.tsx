@@ -1,10 +1,11 @@
 import {IconButton, Td, Tr} from "@chakra-ui/react";
 import Colors from "../../colors";
-import {CheckIcon, CloseIcon} from "@chakra-ui/icons";
-import {useEffect, useState} from "react";
+import {CheckIcon, CloseIcon, EditIcon} from "@chakra-ui/icons";
+import React, {useEffect, useState} from "react";
 import {useUser} from "../../useUser";
 import {Set} from "../types";
 import {validateSet} from "../services/trainingService";
+import {EditableInput} from "./EditableInput";
 
 export type ExerciseDictionary = {
     [key: string]: ValidatedSet
@@ -13,51 +14,59 @@ type ValidatedSet = {
     [key: number]: boolean
 };
 
-export enum Validation {
-    PASS,
-    FAIL,
-    WAITING
+function getValidationColor(isValidated: boolean | null) {
+    let ValidationColor = Colors.LightPrimary
+    if (isValidated !== null) {
+        ValidationColor = isValidated ? Colors.Secondary : Colors.Tertiary
+    }
+    return ValidationColor
 }
 
-const ValidationColor: { [key in Validation]: string } = {
-    [Validation.FAIL]: Colors.Tertiary,
-    [Validation.PASS]: Colors.Secondary,
-    [Validation.WAITING]: Colors.LightPrimary
-}
 
 export const TrainingDetailsRow = ({
-                                       rpe,
-                                       reps,
-                                       weight,
-                                       id,
+                                       set,
+                                       idx,
                                        exerciseName,
-                                       validationStatus: previousValidationStatus
-                                   }: Set) => {
-    const [validationStatus, setValidationStatus] = useState(previousValidationStatus)
+                                       trainingId
+                                   }: { set: Set, idx: number, exerciseName: string, trainingId: string }) => {
+    let editableSet = set
+    const [isValidated, setIsValidated] = useState(set.isValidated)
+    const [isEditable, setIsEditable] = useState(false);
     const {currentUser} = useUser()
-
-    const handleClick = (status: Validation, exerciseName: string) => {
-        setValidationStatus(status)
-        const isValidated: boolean = status === Validation.PASS
-        validateSet({rpe, reps, weight, id: id, exerciseName}, isValidated)
-    }
+    const ValidationColor = getValidationColor(isValidated)
 
     useEffect(() => {
-        setValidationStatus(previousValidationStatus)
-    }, [currentUser, exerciseName, previousValidationStatus])
+        setIsValidated(set.isValidated);
+    }, [trainingId]);
+
+
+    const handleEditClick = () => {
+        setIsEditable(!isEditable);
+    }
+
+    const handleClick = (hasBeenPassed: boolean) => {
+        setIsValidated(hasBeenPassed)
+        validateSet(set, hasBeenPassed, exerciseName, trainingId)
+    }
 
     if (!currentUser) return <h1>Nada</h1>
 
     return (
-        <Tr bgColor={ValidationColor[validationStatus]}>
-            <Td>n° {id + 1}</Td>
-            <Td>{reps}</Td>
-            <Td>{weight} kg</Td>
-            <Td>{rpe}</Td>
+        <Tr bgColor={ValidationColor}>
+            <Td>n° {idx + 1}</Td>
+            <Td>
+                <EditableInput value={set.reps} isEditable={isEditable}/>
+            </Td>
+            <Td>
+                <EditableInput value={set.weight} isEditable={isEditable}/> kg
+            </Td>
+            <Td>
+                <EditableInput value={set.rpe} isEditable={isEditable}/>
+            </Td>
             <Td pl={0}>
                 <IconButton
                     isActive={false}
-                    isDisabled={validationStatus !== Validation.WAITING}
+                    isDisabled={isValidated !== null || isEditable}
                     variant='solid'
                     aria-label="passed"
                     size="xs"
@@ -65,17 +74,26 @@ export const TrainingDetailsRow = ({
                     color={"white"}
                     icon={<CheckIcon/>}
                     m={2}
-                    onClick={() => handleClick(Validation.PASS, exerciseName)}
+                    onClick={() => handleClick(true)}
                 />
                 <IconButton
-                    isDisabled={validationStatus !== Validation.WAITING}
+                    isDisabled={isValidated !== null || isEditable}
                     variant='solid'
-                    aria-label="passed"
+                    aria-label="failed"
                     size="xs"
                     bgColor={Colors.Tertiary}
                     color={"white"}
                     icon={<CloseIcon/>}
-                    onClick={() => handleClick(Validation.FAIL, exerciseName)}
+                    onClick={() => handleClick(false)}
+                />
+                <IconButton
+                    isDisabled={isValidated !== null}
+                    m={2}
+                    variant='solid'
+                    aria-label="passed"
+                    size="xs"
+                    icon={<EditIcon/>}
+                    onClick={handleEditClick}
                 />
 
             </Td>

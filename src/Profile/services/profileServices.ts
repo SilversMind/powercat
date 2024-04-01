@@ -1,6 +1,5 @@
-export const fetchActiveUsers = async (): Promise<string[]> => {
-
-    const url = new URL("http://192.168.1.16:8000/profile/active-users")
+export const fetchActiveUsers = async (ipAddress: string): Promise<string[]> => {
+    const url = new URL(`http://${ipAddress}/profile/active-users`)
     try {
         const response = await fetch(url)
         return await response.json()

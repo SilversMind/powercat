@@ -1,28 +1,21 @@
-import {Validation} from "./components/TrainingDetailsRow";
-
 export type Training = {
-    id: number
-    programId: number
+    id: string
+    trainingPosition: number
     exercises: Exercise[]
-    nbTrainings: number
+}
+
+export type Exercise = {
+    name: string
+    sets: Set[]
 }
 
 export type Set = {
-    exerciseName: string,
-    reps: number,
-    weight: number,
-    rpe: number,
-    id: number
-    validationStatus: Validation
-}
-type Exercise = {
-    exerciseName: string
-    set: number
+    id: string
     reps: number
     rpe: number
     weight: number
+    isValidated: boolean
 }
-
 export type PR = {
     squat: number,
     bench: number,

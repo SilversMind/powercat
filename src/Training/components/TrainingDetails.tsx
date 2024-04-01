@@ -16,10 +16,10 @@ import {
 } from "@chakra-ui/react";
 import Colors from "../../colors";
 import {ExerciseCard} from "./ExerciseCard";
-import {Training} from "../types";
-import {ExerciseDictionary, TrainingDetailsRow, Validation} from "./TrainingDetailsRow";
+import {TrainingDetailsRow} from "./TrainingDetailsRow";
 import {useUser} from "../../useUser";
 import {useCurrentTrainingResult} from "../services/queryTraining";
+import {Exercise, Set, Training} from "../types";
 
 export type ExerciseDetailProps = {
     exerciseName: string
@@ -33,23 +33,14 @@ export function formatName(exerciseName: string) {
     return exerciseName[0].toLocaleUpperCase() + exerciseName.slice(1)
 }
 
-function getSetValidationStatus(trainingResults: ExerciseDictionary | undefined, exerciseName: string, id: number): Validation {
-    if (!trainingResults) return Validation.WAITING
-    if (trainingResults[exerciseName] && trainingResults[exerciseName].hasOwnProperty(id)) {
-        return trainingResults[exerciseName][id] ? Validation.PASS : Validation.FAIL
-    }
-    return Validation.WAITING
-}
-
-const ExerciseDetail = ({set, rpe, reps, weight, exerciseName}: ExerciseDetailProps) => {
+const ExerciseDetail = ({exercise, trainingId}: { exercise: Exercise, trainingId: string }) => {
     const {currentUser} = useUser()
     const {isLoading, trainingResults} = useCurrentTrainingResult()
-    console.log(trainingResults)
     if (isLoading) return (<Spinner>Spin</Spinner>)
     return (
         <TableContainer
-            ml={"10vw"}
-            w={"80vw"}
+            ml={"2vw"}
+            w={"96vw"}
             rounded={25}
             bg={Colors.LightPrimary}
         >
@@ -62,22 +53,21 @@ const ExerciseDetail = ({set, rpe, reps, weight, exerciseName}: ExerciseDetailPr
                 <Thead>
                     <Tr>
                         <Th w={"0px"}>Série</Th>
-                        <Th fontSize={"8px"} maxWidth={"10px"}>
-                            Répétitions
+                        <Th fontSize={"8px"} maxWidth={"10px"} w={"5px"}>
+                            Reps
                         </Th>
                         <Th fontSize={"10px"} maxWidth={"10px"}>
                             Poids
                         </Th>
-                        <Th fontSize={"10px"} maxWidth={"10px"}>
+                        <Th fontSize={"10px"} w={"70px"}>
                             RPE
                         </Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {Array.from({length: set}).map((_: any, index: number) =>
-                        <TrainingDetailsRow reps={reps} weight={weight} rpe={rpe} id={index}
-                                            exerciseName={exerciseName}
-                                            validationStatus={getSetValidationStatus(trainingResults, exerciseName, index)}
+                    {exercise.sets.map((set: Set, index: number) =>
+                        <TrainingDetailsRow set={set} idx={index} exerciseName={exercise.name} trainingId={trainingId}
+                            //validationStatus={getSetValidationStatus(trainingResults, exercise.name, index)}
                                             key={currentUser + index.toString()}/>
                     )}
                 </Tbody>
@@ -93,26 +83,14 @@ export const TrainingDetails = (trainingData: Training) => {
         <Accordion allowToggle>
             <Flex direction={"column"}>
                 <Flex direction={"column"}>
-                    {trainingData?.exercises.map((exercise: ExerciseDetailProps, index: number) =>
+                    {trainingData?.exercises.map((exercise: Exercise, index: number) =>
                         <AccordionItem borderColor={"transparent"} key={index}>
-                            <Box key={exercise.exerciseName}>
+                            <Box key={exercise.name}>
                                 <AccordionButton>
-                                    <ExerciseCard
-                                        exerciseName={formatName(exercise.exerciseName)}
-                                        set={exercise.set}
-                                        rpe={exercise.rpe}
-                                        reps={exercise.reps}
-                                        weight={exercise.weight}
-                                    />
+                                    <ExerciseCard name={exercise.name} sets={exercise.sets}/>
                                 </AccordionButton>
                                 <AccordionPanel p={0}>
-                                    <ExerciseDetail
-                                        exerciseName={exercise.exerciseName}
-                                        set={exercise.set}
-                                        rpe={exercise.rpe}
-                                        reps={exercise.reps}
-                                        weight={exercise.weight}
-                                    />
+                                    <ExerciseDetail exercise={exercise} trainingId={trainingData.id}/>
                                 </AccordionPanel>
                             </Box>
                         </AccordionItem>

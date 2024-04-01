@@ -1,5 +1,6 @@
 import {exerciseContainerStyle, exercisesContainerStyle, exerciseStyle, profileStyle,} from "./ProfileScreenStyle";
 import {useEffect, useState} from "react";
+import {settings} from "../setting";
 
 interface Profile {
     name: string;
@@ -16,7 +17,7 @@ export const ProfilePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://192.168.1.16:8000/profile/");
+                const response = await fetch(`http://${settings.defaultIPAddress}/profile/`);
                 const data = await response.json();
                 setProfileData(data);
             } catch (error) {

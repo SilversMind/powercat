@@ -1,43 +1,69 @@
-import {Set, Training} from "../types";
+import {Exercise, Set, Training} from "../types";
 import {useUser} from "../../useUser";
 import {ExerciseDictionary} from "../components/TrainingDetailsRow";
+import {settings} from "../../setting";
+
+const mapResponseToTestSet = (responseSet: any): Set => {
+    return {
+        id: responseSet.id,
+        reps: responseSet.reps,
+        rpe: responseSet.rpe,
+        weight: responseSet.weight,
+        isValidated: responseSet.is_validated
+    };
+};
 
 export const fetchTraining = async (username: string | undefined): Promise<Training | undefined> => {
     if (!username) return
-    const response = await fetch(`http://192.168.1.16:8000/training?username=${username}`)
-    return response.json()
+    const response = await fetch(`http://${settings.defaultIPAddress}/training?username=${username}`)
+    const result = await response.json()
+    const exercises: Exercise[] = result.exercises.map((exercise: Exercise) => {
+        const sets: Set[] = exercise.sets.map((set: Set) => mapResponseToTestSet(set));
+        return {
+            name: exercise.name,
+            sets: sets
+        };
+    });
+
+    return {
+        id: result.id,
+        trainingPosition: result.training_position,
+        exercises: exercises
+    };
 }
 
 export const fetchCurrentTrainingResults = async (username: string | undefined): Promise<ExerciseDictionary | undefined> => {
     if (!username) return
-    const response = await fetch(`http://192.168.1.16:8000/training/get_current_training_results?username=${username}`)
+    const response = await fetch(`http://${settings.defaultIPAddress}/training/get_current_training_results?username=${username}`)
     return response.json()
 }
 
-export const validateSet = async (set: Omit<Set, "validationStatus">, isValidated: boolean) => {
+export const validateSet = async (set: Set, isValidated: boolean, exerciseName: string, trainingId: string) => {
     const currentUser = useUser.getState().currentUser
     if (!currentUser) return Promise.reject()
     const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({name: currentUser, validated: set, isValidated: isValidated}),
+        body: JSON.stringify({
+            name: currentUser,
+            validated: set,
+            isValidated: isValidated,
+            exerciseName: exerciseName,
+            trainingId: trainingId
+        }),
     }
-    const response = await fetch("http://192.168.1.16:8000/training/validate_set", requestOptions)
+    const response = await fetch(`http://${settings.defaultIPAddress}/training/validate_set`, requestOptions)
     return response.json()
 }
 
-export const updateCurrentTraining = async (): Promise<void> => {
-    const currentUser = useUser.getState().currentUser
+export const updateCurrentTraining = async (currentUser: string | undefined): Promise<void> => {
     if (!currentUser) return Promise.reject()
-
-    const validatedSets = localStorage.getItem(currentUser)
-    localStorage.removeItem(currentUser)
 
     const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({name: currentUser, validatedSets: JSON.parse(validatedSets ?? "{}")}),
+        body: JSON.stringify({name: currentUser}),
     }
-    const response = await fetch("http://192.168.1.16:8000/training/finish", requestOptions)
+    const response = await fetch(`http://${settings.defaultIPAddress}/training/finish`, requestOptions)
     return response.json()
 }
