@@ -15,7 +15,7 @@ const mapResponseToTestSet = (responseSet: any): Set => {
 
 export const fetchTraining = async (username: string | undefined): Promise<Training | undefined> => {
     if (!username) return
-    const response = await fetch(`http://${settings.defaultIPAddress}/training?username=${username}`)
+    const response = await fetch(`${settings.defaultIPAddress}/training?username=${username}`)
     const result = await response.json()
     const exercises: Exercise[] = result.exercises.map((exercise: Exercise) => {
         const sets: Set[] = exercise.sets.map((set: Set) => mapResponseToTestSet(set));
@@ -34,7 +34,7 @@ export const fetchTraining = async (username: string | undefined): Promise<Train
 
 export const fetchCurrentTrainingResults = async (username: string | undefined): Promise<ExerciseDictionary | undefined> => {
     if (!username) return
-    const response = await fetch(`http://${settings.defaultIPAddress}/training/get_current_training_results?username=${username}`)
+    const response = await fetch(`${settings.defaultIPAddress}/training/get_current_training_results?username=${username}`)
     return response.json()
 }
 
@@ -52,7 +52,7 @@ export const validateSet = async (set: Set, isValidated: boolean, exerciseName: 
             trainingId: trainingId
         }),
     }
-    const response = await fetch(`http://${settings.defaultIPAddress}/training/validate_set`, requestOptions)
+    const response = await fetch(`${settings.defaultIPAddress}/training/validate_set`, requestOptions)
     return response.json()
 }
 
@@ -64,6 +64,6 @@ export const updateCurrentTraining = async (currentUser: string | undefined): Pr
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({name: currentUser}),
     }
-    const response = await fetch(`http://${settings.defaultIPAddress}/training/finish`, requestOptions)
+    const response = await fetch(`${settings.defaultIPAddress}/training/finish`, requestOptions)
     return response.json()
 }

@@ -17,7 +17,7 @@ export const ProfilePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://${settings.defaultIPAddress}/profile/`);
+                const response = await fetch(`${settings.defaultIPAddress}/profile/`);
                 const data = await response.json();
                 setProfileData(data);
             } catch (error) {
