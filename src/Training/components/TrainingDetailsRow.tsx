@@ -29,7 +29,7 @@ export const TrainingDetailsRow = ({
                                        exerciseName,
                                        trainingId
                                    }: { set: Set, idx: number, exerciseName: string, trainingId: string }) => {
-    let editableSet = set
+    // let editableSet = set
     const [isValidated, setIsValidated] = useState(set.isValidated)
     const [isEditable, setIsEditable] = useState(false);
     const {currentUser} = useUser()
