@@ -14,7 +14,7 @@ export const EditableInput: React.FC<EditableInputProps> = ({value, isEditable})
     return (
         <>
             {isEditable ? (
-                <Input type={"number"} _placeholder={{color: "rgba(255, 255, 255, 0.5)"}} onChange={handleChange}
+                <Input type={"number"} onChange={handleChange}
                        placeholder={value.toString()}
                        p={2} w="40px"/>) : editedContent}
         </>

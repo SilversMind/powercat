@@ -8,7 +8,7 @@ export type UserState = {
 }
 
 export const useUser = create<UserState>((set) => ({
-    currentUser: undefined,
+    currentUser: "Lolo",
     updateCurrentUser: (newCurrentUser: string) => set({currentUser: newCurrentUser})
 }))
 fetchActiveUsers(settings.defaultIPAddress).then(users => useUser.setState({currentUser: users[0]}))

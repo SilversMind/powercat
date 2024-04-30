@@ -1,6 +1,5 @@
 import {Button, Flex, Spinner, useToast} from "@chakra-ui/react"
 import {ProgramProgressInfo} from "./components/ProgramProgressInfo"
-import Colors from "../colors"
 import {TrainingDetails} from "./components/TrainingDetails"
 import React from "react"
 import {useTraining, useUpdateTraining} from "./services/queryTraining";
@@ -46,19 +45,14 @@ export const TrainingContent = () => {
                 mt={4}
                 justify="center"
                 w="25vw"
-                bg={Colors.Primary}
                 rounded="md"
-                color="white"
             >
                 Séance {training.trainingPosition}
             </Flex>
             <TrainingDetails {...training} />
             <Button
                 mt={10}
-                bg={Colors.Secondary}
                 border="2px"
-                borderColor="white"
-                color="white"
                 size="lg"
                 onClick={handleClick}
             >

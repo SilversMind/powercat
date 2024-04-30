@@ -1,4 +1,3 @@
-import Colors from "../../colors";
 import {Flex, Spacer, Text} from "@chakra-ui/react";
 import {Exercise} from "../types";
 import {formatName} from "./TrainingDetails";
@@ -14,7 +13,7 @@ const ExerciseCardColumnInfos = ({
                                  }: ExerciseCardColumnInfosProps) => {
     return (
         <>
-            <Flex flexDir={"column"} color={"white"} align="center">
+            <Flex flexDir={"column"} align="center">
                 <Text>{name}</Text>
                 <Text fontSize={"lg"}>{value}</Text>
             </Flex>
@@ -26,19 +25,18 @@ const ExerciseCardColumnInfos = ({
 export const ExerciseCard = (exercise: Exercise) => {
     return (
         <Flex
-            bg={Colors.Primary}
             w={"90vw"}
             rounded={"md"}
             mt={4}
             justify="space-between"
             align="center"
         >
-            <Flex m={4} color={"white"} fontWeight={"bold"}>
+            <Flex m={4} fontWeight={"bold"}>
                 {formatName(exercise.name)}
             </Flex>
             <ExerciseCardColumnInfos name={"Série"} value={exercise.sets.length}/>
             <ExerciseCardColumnInfos name={"Répétition"} value={exercise.sets[0].reps}/>
-            <Flex flexDir={"column"} color={"white"} align="center">
+            <Flex flexDir={"column"} align="center">
                 <Text>Poids</Text>
                 <Flex>
                     <Text fontSize={"lg"}>{exercise.sets[0].weight}</Text>

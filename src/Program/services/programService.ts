@@ -11,8 +11,8 @@ export const fetchProgramMetadata = async (username: string | undefined): Promis
     }
 }
 
-export const fetchPrograms = async (): Promise<ProgramData[] | undefined> => {
-    const response = await fetch(`${settings.defaultIPAddress}/program/list-programs`)
+export const fetchPrograms = async (username: string | undefined): Promise<ProgramData[] | undefined> => {
+    const response = await fetch(`${settings.defaultIPAddress}/program/list-programs?username=${username}`)
     const result = await response.json()
     const mappedData = result.map((item: any) => {
         return {
@@ -20,9 +20,25 @@ export const fetchPrograms = async (): Promise<ProgramData[] | undefined> => {
             name: item.name,
             category: item.category,
             nbTrainings: item.nb_trainings,
-            trainings: item.trainings,
+            trainings: item.trainings.map((training: any) => ({
+                exercises: training.exercises,
+                id: training.id,
+                trainingPosition: training.training_position
+            }))
         };
     });
 
     return mappedData;
+}
+
+export const updateCurrentProgram = async (programId: string, currentUser: string | undefined): Promise<void> => {
+    if (!currentUser) return Promise.reject()
+
+    const requestOptions = {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username: currentUser, program_id: programId.toString()}),
+    }
+    const response = await fetch(`${settings.defaultIPAddress}/program/select`, requestOptions)
+    return response.json()
 }

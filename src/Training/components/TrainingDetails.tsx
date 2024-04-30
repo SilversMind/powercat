@@ -14,7 +14,6 @@ import {
     Thead,
     Tr,
 } from "@chakra-ui/react";
-import Colors from "../../colors";
 import {ExerciseCard} from "./ExerciseCard";
 import {TrainingDetailsRow} from "./TrainingDetailsRow";
 import {useUser} from "../../useUser";
@@ -42,11 +41,9 @@ const ExerciseDetail = ({exercise, trainingId}: { exercise: Exercise, trainingId
             ml={"2vw"}
             w={"96vw"}
             rounded={25}
-            bg={Colors.LightPrimary}
         >
             <Table
                 variant="stripped"
-                color={"white"}
                 layout={"fixed"}
                 className={"no-padding"}
             >

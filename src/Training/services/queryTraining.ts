@@ -30,4 +30,5 @@ export const useUpdateTraining = () => {
     return {updateTraining: result.mutate, ...result}
 }
 
+
 const mutateUpdateTraining = (userName: string | undefined) => updateCurrentTraining(userName)

@@ -1,5 +1,4 @@
 import {IconButton, Td, Tr} from "@chakra-ui/react";
-import Colors from "../../colors";
 import {CheckIcon, CloseIcon, EditIcon} from "@chakra-ui/icons";
 import React, {useEffect, useState} from "react";
 import {useUser} from "../../useUser";
@@ -15,9 +14,9 @@ type ValidatedSet = {
 };
 
 function getValidationColor(isValidated: boolean | null) {
-    let ValidationColor = Colors.LightPrimary
+    let ValidationColor = "white"
     if (isValidated !== null) {
-        ValidationColor = isValidated ? Colors.Secondary : Colors.Tertiary
+        ValidationColor = isValidated ? "green" : "red" // TODO
     }
     return ValidationColor
 }
@@ -70,8 +69,6 @@ export const TrainingDetailsRow = ({
                     variant='solid'
                     aria-label="passed"
                     size="xs"
-                    bgColor={Colors.Secondary}
-                    color={"white"}
                     icon={<CheckIcon/>}
                     m={2}
                     onClick={() => handleClick(true)}
@@ -81,8 +78,6 @@ export const TrainingDetailsRow = ({
                     variant='solid'
                     aria-label="failed"
                     size="xs"
-                    bgColor={Colors.Tertiary}
-                    color={"white"}
                     icon={<CloseIcon/>}
                     onClick={() => handleClick(false)}
                 />

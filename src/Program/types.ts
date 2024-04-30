@@ -9,7 +9,7 @@ export type ProgramData = {
     name: string
     category: string
     nbTrainings: number
-    trainings: Training
+    trainings: Training[]
 }
 
 enum Category {
