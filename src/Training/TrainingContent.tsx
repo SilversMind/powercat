@@ -30,6 +30,7 @@ export const TrainingContent = () => {
                     description: "Bien joué l'équipe ! Stronger than yesterday, Weaker than tomorrow",
                     status: 'success',
                     isClosable: true,
+                    position: "top"
                 })
             }
         })
