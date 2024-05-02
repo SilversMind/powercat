@@ -1,6 +1,6 @@
 import {settings} from "../../setting";
 
-export const fetchActiveUsers = async (ipAddress: string): Promise<string[]> => {
+export const fetchActiveUsers = async (): Promise<string[]> => {
     try {
         const response = await fetch(`${settings.defaultIPAddress}/profile/active-users`)
         return await response.json()
