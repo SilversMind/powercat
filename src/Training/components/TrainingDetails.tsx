@@ -49,7 +49,6 @@ const ExerciseDetail = ({exercise, trainingId}: { exercise: Exercise, trainingId
             >
                 <Thead>
                     <Tr>
-                        <Th w={"0px"}>Série</Th>
                         <Th fontSize={"8px"} maxWidth={"10px"} w={"5px"}>
                             Reps
                         </Th>

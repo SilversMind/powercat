@@ -52,7 +52,6 @@ export const TrainingDetailsRow = ({
 
     return (
         <Tr bgColor={ValidationColor}>
-            <Td>n° {idx + 1}</Td>
             <Td>
                 <EditableInput value={set.reps} isEditable={isEditable}/>
             </Td>
