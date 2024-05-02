@@ -23,8 +23,9 @@ export const useCurrentTrainingResult = () => {
 }
 
 export const useUpdateTraining = () => {
+    const {currentUser} = useUser()
     const result = useMutation(mutateUpdateTraining, {
-        onSuccess: () => queryClient.invalidateQueries([trainingKey])
+        onSuccess: () => queryClient.invalidateQueries([trainingKey, currentUser])
     })
 
     return {updateTraining: result.mutate, ...result}

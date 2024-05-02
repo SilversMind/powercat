@@ -5,22 +5,16 @@ import React from "react"
 import {useTraining, useUpdateTraining} from "./services/queryTraining";
 import {useUser} from "../useUser";
 import {useProgram} from "../Program/services/queryProgram";
+import {useNavigate} from "react-router-dom";
 
 
 export const TrainingContent = () => {
     const toast = useToast()
+    const navigate = useNavigate()
     const {currentUser} = useUser()
     const {training, isTrainingLoading} = useTraining()
     const {updateTraining} = useUpdateTraining()
     const {program, isProgramLoading} = useProgram()
-
-    if (!program || !training) return null
-
-    if (isProgramLoading || isTrainingLoading) return (
-        <Flex margin="auto">
-            <Spinner/>
-        </Flex>
-    )
 
     const handleClick = () => {
         updateTraining(currentUser, {
@@ -35,6 +29,25 @@ export const TrainingContent = () => {
             }
         })
     }
+
+    if (isProgramLoading || isTrainingLoading) return (
+        <Flex margin="auto">
+            <Spinner/>
+        </Flex>
+    )
+
+
+    if (!program || !training) return (
+        <Flex margin="auto" direction="column">
+            Pas de programme en cours !
+            <Button
+                border="2px"
+                size="lg"
+                onClick={() => navigate('/programs')}
+            >
+                Voir les programmes
+            </Button>
+        </Flex>)
 
 
     return (

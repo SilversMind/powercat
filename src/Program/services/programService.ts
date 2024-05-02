@@ -1,9 +1,12 @@
 import {ProgramData, ProgramMetadata} from "../types";
 import {settings} from "../../setting";
 
-export const fetchProgramMetadata = async (username: string | undefined): Promise<ProgramMetadata | undefined> => {
+export const fetchProgramMetadata = async (username: string | undefined): Promise<ProgramMetadata | null | undefined> => {
     if (!username) return
     const response = await fetch(`${settings.defaultIPAddress}/program?username=${username}`)
+
+    if (response.status === 204) return null
+
     const result = await response.json()
     return {
         id: result.id,
@@ -14,7 +17,7 @@ export const fetchProgramMetadata = async (username: string | undefined): Promis
 export const fetchPrograms = async (username: string | undefined): Promise<ProgramData[] | undefined> => {
     const response = await fetch(`${settings.defaultIPAddress}/program/list-programs?username=${username}`)
     const result = await response.json()
-    const mappedData = result.map((item: any) => {
+    return result.map((item: any) => {
         return {
             id: item.id,
             name: item.name,
@@ -27,8 +30,6 @@ export const fetchPrograms = async (username: string | undefined): Promise<Progr
             }))
         };
     });
-
-    return mappedData;
 }
 
 export const updateCurrentProgram = async (programId: string, currentUser: string | undefined): Promise<void> => {
