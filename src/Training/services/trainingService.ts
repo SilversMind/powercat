@@ -45,7 +45,7 @@ export const validateSet = async (set: Set, isValidated: boolean, exerciseName: 
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-            name: currentUser,
+            username: currentUser,
             validated: set,
             isValidated: isValidated,
             exerciseName: exerciseName,
