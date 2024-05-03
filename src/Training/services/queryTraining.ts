@@ -2,6 +2,7 @@ import {useMutation, useQuery} from "react-query"
 import {fetchCurrentTrainingResults, fetchTraining, updateCurrentTraining} from "./trainingService"
 import {useUser} from "../../useUser"
 import {queryClient} from "../../App";
+import {programKey} from "../../Program/services/queryProgram";
 
 export const trainingKey = "training"
 export const trainingResultKey = "trainingResult"
@@ -25,7 +26,10 @@ export const useCurrentTrainingResult = () => {
 export const useUpdateTraining = () => {
     const {currentUser} = useUser()
     const result = useMutation(mutateUpdateTraining, {
-        onSuccess: () => queryClient.invalidateQueries([trainingKey, currentUser])
+        onSuccess: () => {
+            queryClient.invalidateQueries([programKey, currentUser])
+            queryClient.invalidateQueries([trainingKey, currentUser])
+        }
     })
 
     return {updateTraining: result.mutate, ...result}
