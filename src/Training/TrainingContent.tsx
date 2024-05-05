@@ -1,20 +1,18 @@
-import {Button, Flex, Spinner, useToast} from "@chakra-ui/react"
+import {Button, Flex, useToast} from "@chakra-ui/react"
 import {ProgramProgressInfo} from "./components/ProgramProgressInfo"
 import {TrainingDetails} from "./components/TrainingDetails"
 import React from "react"
 import {useTraining, useUpdateTraining} from "./services/queryTraining";
 import {useUser} from "../useUser";
 import {useProgram} from "../Program/services/queryProgram";
-import {useNavigate} from "react-router-dom";
-
+import {NoTraining} from "./components/NoTraining";
 
 export const TrainingContent = () => {
     const toast = useToast()
-    const navigate = useNavigate()
     const {currentUser} = useUser()
-    const {training, isTrainingLoading} = useTraining()
+    const {training} = useTraining()
     const {updateTraining} = useUpdateTraining()
-    const {program, isProgramLoading} = useProgram()
+    const {program} = useProgram()
 
     const handleClick = () => {
         updateTraining(currentUser, {
@@ -30,26 +28,9 @@ export const TrainingContent = () => {
         })
     }
 
-    if (isProgramLoading || isTrainingLoading) return (
-        <Flex margin="auto">
-            <Spinner/>
-        </Flex>
-    )
-
-
-    if (!program || !training) return (
-        <Flex margin="auto" direction="column">
-            Pas de programme en cours !
-            <Button
-                border="2px"
-                size="lg"
-                onClick={() => navigate('/programs')}
-            >
-                Voir les programmes
-            </Button>
-        </Flex>)
-
-
+    if (!program || !training) {
+        return <NoTraining/>
+    }
     return (
         <>
             <ProgramProgressInfo trainingId={training.trainingPosition} programId={program.id}

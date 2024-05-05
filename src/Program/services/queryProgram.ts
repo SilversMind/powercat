@@ -21,8 +21,7 @@ export const useUpdateProgram = () => {
     const result = useMutation(mutateUpdateProgram, {
         onSuccess: () => queryClient.invalidateQueries([programKey])
     })
-
-    return {updateProgram: result.mutate, ...result}
+    return {updateProgram: result.mutate, ...result};
 }
 
 export const usePrograms = () => {

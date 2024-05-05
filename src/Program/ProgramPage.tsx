@@ -1,7 +1,7 @@
 import {Page} from "../Layout/Page";
 import ProgramContent from "./ProgramContent";
 
-const TrainingPage = () => {
+const ProgramPage = () => {
     return (
         <Page>
             <ProgramContent/>
@@ -9,4 +9,4 @@ const TrainingPage = () => {
     )
 }
 
-export default TrainingPage
+export default ProgramPage
