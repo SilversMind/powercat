@@ -4,19 +4,25 @@ export type ProgramMetadata = {
     id: string
     nbTrainings: number
 }
-export type ProgramData = {
+export type SubBlock = {
+    name: string
+    startTrainingId: number
+    endTrainingId: number
+}
+export type Block = {
+    id: string
+    name: string
+    subBlocks: SubBlock[]
+}
+export type Program = {
     id: string
     name: string
     category: string
     nbTrainings: number
     trainings: Training[]
-}
-
-enum Category {
-    PEAKING = '1',
-    TECHNIQUE = '2',
+    blocks: Block[]
 }
 
 export type Programs = {
-    programs: ProgramData[]
+    programs: Program[]
 }

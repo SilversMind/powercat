@@ -1,4 +1,4 @@
-import {ProgramData, ProgramMetadata} from "../types";
+import {Program, ProgramMetadata} from "../types";
 import {settings} from "../../setting";
 
 export const fetchProgramMetadata = async (username: string | undefined): Promise<ProgramMetadata | null | undefined> => {
@@ -14,15 +14,24 @@ export const fetchProgramMetadata = async (username: string | undefined): Promis
     }
 }
 
-export const fetchPrograms = async (username: string | undefined): Promise<ProgramData[] | undefined> => {
+export const fetchPrograms = async (username: string | undefined): Promise<Program[] | undefined> => {
     const response = await fetch(`${settings.defaultIPAddress}/program/list-programs?username=${username}`)
     const result = await response.json()
     return result.map((item: any) => {
         return {
-            id: item.id,
+            id: String(item.id),
             name: item.name,
             category: item.category,
             nbTrainings: item.nb_trainings,
+            blocks: item.blocks ? item.blocks.map((block: any) => ({
+                id: block.id,
+                name: block.name,
+                subBlocks: block.subblocks.map((subblock: any) => ({
+                    name: subblock.name,
+                    startTrainingId: subblock.start_training_id,
+                    endTrainingId: subblock.end_training_id
+                }))
+            })) : undefined,
             trainings: item.trainings.map((training: any) => ({
                 exercises: training.exercises,
                 id: training.id,
