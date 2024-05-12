@@ -17,6 +17,7 @@ export type Set = {
     isValidated: boolean
 }
 export type PR = {
+    [exercise: string]: number;
     squat: number,
     bench: number,
     deadlift: number

@@ -1,4 +1,4 @@
-import {Input} from "@chakra-ui/react";
+import {Input, Text} from "@chakra-ui/react";
 import React, {ChangeEvent, useState} from "react";
 
 interface EditableInputProps {
@@ -11,12 +11,9 @@ export const EditableInput: React.FC<EditableInputProps> = ({value, isEditable})
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEditedContent(Number(e.target.value));
     };
-    return (
-        <>
-            {isEditable ? (
-                <Input type={"number"} onChange={handleChange}
-                       placeholder={value.toString()}
-                       p={2} w="40px"/>) : editedContent}
-        </>
-    )
+    return isEditable ?
+        <Input type={"number"} onChange={handleChange}
+               placeholder={value.toString()}
+               p={2} w="50px"/> :
+        <Text>{editedContent}</Text>
 }
